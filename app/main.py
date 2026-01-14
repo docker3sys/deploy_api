@@ -48,3 +48,9 @@ def get_user(user_id: int):
 @app.post("/echo")
 def echo(data: dict):
     return data
+
+
+from fastapi.staticfiles import StaticFiles
+
+# Подключаем папку static
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
