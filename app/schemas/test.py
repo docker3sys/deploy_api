@@ -1,5 +1,18 @@
 from pydantic import BaseModel
-from typing import Dict
+
+class TestCreate(BaseModel):
+    title: str
+    description: str | None = None
+
+class TestResponse(BaseModel):
+    id: int
+    title: str
+    description: str | None = None
+
+    class Config:
+        from_attributes = True
 
 class TestSubmit(BaseModel):
-    answers: Dict[str, int]
+    user_id: int
+    test_id: int
+    score: int

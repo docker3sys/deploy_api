@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from app.database import SessionLocal, engine
+from app.database import SessionLocal, Base, engine
 from app.routers import tests
 from app import models
 
@@ -8,7 +8,7 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Mental Health Tests")
 
-app.include_router(tests.router)
+app.include_router(tests.router, prefix="/tests")
 
 def get_db():
     db = SessionLocal()
@@ -18,7 +18,7 @@ def get_db():
         db.close()
 
 from app.auth import authenticate_user, create_access_token
-from app.schemas import UserCreate
+from app.schemas import UserCreate, UserResponse
 
 @app.post("/auth/login")
 def login(user: UserCreate, db: Session = Depends(get_db)):
@@ -30,7 +30,7 @@ def login(user: UserCreate, db: Session = Depends(get_db)):
     return {"access_token": token, "token_type": "bearer"}
 
 from app.auth import get_current_user
-from app.models import User
+from app.models import engine, Base, User
 
 @app.get("/profile")
 def profile(user: User = Depends(get_current_user)):

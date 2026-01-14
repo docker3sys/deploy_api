@@ -1,31 +1,43 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from app.database import SessionLocal
-from app.models.test import Test
-from app.schemas.test import TestSubmit
-from app.services.scoring import calculate_scores
+from fastapi import APIRouter
+from pydantic import BaseModel
+from pathlib import Path
+import json
 
-router = APIRouter(prefix="/tests", tags=["Tests"])
+router = APIRouter()
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# GET - отдать тест
+@router.get("/{test_name}")
+def get_test(test_name: str):
+    path = Path("tests") / f"{test_name}.json"
+    if not path.exists():
+        return {"error": "Test not found"}
+    
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    return data
 
-@router.get("/{slug}")
-def get_test(slug: str, db: Session = Depends(get_db)):
-    test = db.query(Test).filter(Test.slug == slug, Test.is_active == True).first()
-    if not test:
-        raise HTTPException(404)
-    return test
+# POST - принять ответы и посчитать результат
+class Answer(BaseModel):
+    question_id: str
+    value: int
 
-@router.post("/{slug}/submit")
-def submit_test(slug: str, data: TestSubmit, db: Session = Depends(get_db)):
-    test = db.query(Test).filter(Test.slug == slug).first()
-    if not test:
-        raise HTTPException(404)
+class TestSubmit(BaseModel):
+    test_name: str
+    answers: list[Answer]
 
-    scores = calculate_scores(test.questions, data.answers)
-    return {"scores": scores}
+@router.post("/submit")
+def submit_test(submit: TestSubmit):
+    path = Path("tests") / f"{submit.test_name}.json"
+    if not path.exists():
+        return {"error": "Test not found"}
+
+    with open(path, "r", encoding="utf-8") as f:
+        test = json.load(f)
+
+    score = 0
+    for answer in submit.answers:
+        q = next((q for q in test["questions"] if q["id"] == answer.question_id), None)
+        if q:
+            score += answer.value
+
+    return {"score": score}

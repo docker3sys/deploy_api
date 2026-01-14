@@ -1,229 +1,83 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Психометрический тест: тревога, депрессия, ОКР</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #020617;
-      color: #e5e7eb;
-      margin: 0;
-      padding: 20px;
-    }
-    .container {
-      max-width: 760px;
-      margin: auto;
-      background: #020617;
-      border: 1px solid #1e293b;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 30px rgba(0,0,0,.4);
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .progress {
-      height: 10px;
-      background: #0f172a;
-      border-radius: 6px;
-      overflow: hidden;
-      margin: 20px 0;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #22d3ee, #2563eb);
-      transition: width .3s;
-    }
-    .question {
-      margin-bottom: 22px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid #1e293b;
-    }
-    label {
-      display: block;
-      margin: 6px 0;
-      cursor: pointer;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 16px;
-      background: #2563eb;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #1d4ed8;
-    }
-    .result {
-      margin-top: 30px;
-      padding: 20px;
-      background: #020617;
-      border: 1px solid #1e293b;
-      border-radius: 12px;
-    }
-    .scale {
-      margin-bottom: 16px;
-    }
-    .note {
-      font-size: 12px;
-      color: #94a3b8;
-      margin-top: 20px;
-    }
-    .ad {
-      margin-top: 30px;
-      padding: 16px;
-      border-radius: 12px;
-      background: #0f172a;
-      font-size: 14px;
-    }
-    .ad a {
-      color: #38bdf8;
-      text-decoration: none;
-      font-weight: 600;
-    }
-  </style>
+<meta charset="UTF-8" />
+<title>Психометрический тест</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  body { font-family: system-ui, sans-serif; background: #020617; color: #e5e7eb; margin:0; padding:20px; }
+  .container { max-width:760px; margin:auto; padding:24px; border-radius:16px; background:#020617; border:1px solid #1e293b; box-shadow:0 0 30px rgba(0,0,0,.4);}
+  h1,h2{text-align:center;}
+  .progress{height:10px;background:#0f172a;border-radius:6px;overflow:hidden;margin:20px 0;}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#2563eb);transition:width .3s;}
+  .question{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid #1e293b;}
+  label{display:block;margin:6px 0;cursor:pointer;}
+  button{width:100%;padding:14px;font-size:16px;background:#2563eb;color:#fff;border:none;border-radius:10px;cursor:pointer;}
+  button:hover{background:#1d4ed8;}
+  .result{margin-top:30px;padding:20px;background:#020617;border:1px solid #1e293b;border-radius:12px;}
+  .scale{margin-bottom:16px;}
+  .note{font-size:12px;color:#94a3b8;margin-top:20px;}
+</style>
 </head>
 <body>
 <div class="container">
   <h1>🧠 Психометрический тест</h1>
   <p style="text-align:center">Тревога • Депрессия • ОКР</p>
-
   <div class="progress"><div class="progress-bar" id="progress"></div></div>
-
-  <form id="testForm">
-
-    <h2>😟 Тревога</h2>
-    <div class="question">
-      <p>Я часто чувствую внутреннее напряжение без причины</p>
-      <label><input type="radio" name="a1" value="0" required> Никогда</label>
-      <label><input type="radio" name="a1" value="1"> Иногда</label>
-      <label><input type="radio" name="a1" value="2"> Часто</label>
-      <label><input type="radio" name="a1" value="3"> Почти постоянно</label>
-    </div>
-    <div class="question">
-      <p>Мне сложно расслабиться даже в безопасной обстановке</p>
-      <label><input type="radio" name="a2" value="0" required> Нет</label>
-      <label><input type="radio" name="a2" value="1"> Иногда</label>
-      <label><input type="radio" name="a2" value="2"> Часто</label>
-      <label><input type="radio" name="a2" value="3"> Почти всегда</label>
-    </div>
-
-    <h2>😔 Депрессия</h2>
-    <div class="question">
-      <p>Я чувствую апатию и потерю интереса к тому, что раньше радовало</p>
-      <label><input type="radio" name="d1" value="0" required> Нет</label>
-      <label><input type="radio" name="d1" value="1"> Иногда</label>
-      <label><input type="radio" name="d1" value="2"> Часто</label>
-      <label><input type="radio" name="d1" value="3"> Почти всегда</label>
-    </div>
-    <div class="question">
-      <p>Я часто чувствую усталость даже без физической нагрузки</p>
-      <label><input type="radio" name="d2" value="0" required> Нет</label>
-      <label><input type="radio" name="d2" value="1"> Иногда</label>
-      <label><input type="radio" name="d2" value="2"> Часто</label>
-      <label><input type="radio" name="d2" value="3"> Почти всегда</label>
-    </div>
-
-    <h2>🔁 ОКР</h2>
-    <div class="question">
-      <p>Меня преследуют навязчивые мысли, от которых сложно избавиться</p>
-      <label><input type="radio" name="o1" value="0" required> Нет</label>
-      <label><input type="radio" name="o1" value="1"> Иногда</label>
-      <label><input type="radio" name="o1" value="2"> Часто</label>
-      <label><input type="radio" name="o1" value="3"> Почти постоянно</label>
-    </div>
-    <div class="question">
-      <p>Я совершаю повторяющиеся действия, чтобы снизить тревогу</p>
-      <label><input type="radio" name="o2" value="0" required> Нет</label>
-      <label><input type="radio" name="o2" value="1"> Иногда</label>
-      <label><input type="radio" name="o2" value="2"> Часто</label>
-      <label><input type="radio" name="o2" value="3"> Почти всегда</label>
-    </div>
-
-    <button type="submit">📊 Показать результат</button>
-  </form>
-
+  <form id="testForm"></form>
   <div id="result" class="result" style="display:none"></div>
-
-  <div class="ad">
-    💡 Полезный продукт для снижения стресса:<br>
-    <a href="https://market.yandex.ru/cc/8MWgPd" target="_blank">Посмотреть на Яндекс Маркете →</a>
-  </div>
-
-  <div class="note">
-    ⚠️ Тест основан на принципах психометрических шкал (GAD‑7, PHQ‑9, OCI‑R), но не является медицинской диагностикой.
-    При выраженных симптомах рекомендуется обратиться к специалисту.
-  </div>
+  <div class="note">⚠️ Тест основан на принципах психометрических шкал, но не является медицинской диагностикой.</div>
 </div>
-
 <script>
 'use strict';
-
-document.addEventListener('DOMContentLoaded', () => {
+async function loadTest() {
   const form = document.getElementById('testForm');
-  const progress = document.getElementById('progress');
-  const result = document.getElementById('result');
-
-  if (!form || !progress) return;
-
+  const progressBar = document.getElementById('progress');
+  const resultDiv = document.getElementById('result');
+  
+  const res = await fetch('/tests/anxiety.json');
+  const test = await res.json();
+  
+  form.innerHTML = test.questions.map(q => `
+    <h2>${q.category}</h2>
+    <div class="question">
+      <p>${q.text}</p>
+      ${q.options.map(opt => `<label><input type="radio" name="${q.id}" value="${opt.value}" required> ${opt.text}</label>`).join('')}
+    </div>
+  `).join('') + `<button type="submit">📊 Показать результат</button>`;
+  
   const inputs = Array.from(form.querySelectorAll('input[type="radio"]'));
   const questionNames = [...new Set(inputs.map(i => i.name))];
-  const totalQuestions = questionNames.length;
-
+  
   function updateProgress() {
-    let answered = 0;
-    questionNames.forEach(name => {
-      if (form.querySelector(`input[name="${name}"]:checked`)) {
-        answered++;
-      }
-    });
-    const percent = Math.round((answered / totalQuestions) * 100);
-    progress.style.width = percent + '%';
+    const answered = questionNames.filter(name => form.querySelector(`input[name="${name}"]:checked`)).length;
+    progressBar.style.width = Math.round(answered / questionNames.length * 100) + '%';
   }
-
+  
   inputs.forEach(i => i.addEventListener('change', updateProgress));
-
+  
   form.addEventListener('submit', e => {
     e.preventDefault();
-
-    let anxiety = 0, depression = 0, ocd = 0;
+    let anxiety=0, depression=0, ocd=0;
     const data = new FormData(form);
-
-    for (const [key, value] of data.entries()) {
-      const v = Number(value);
-      if (key.startsWith('a')) anxiety += v;
-      else if (key.startsWith('d')) depression += v;
-      else if (key.startsWith('o')) ocd += v;
+    for(const [key,val] of data.entries()){
+      const v=Number(val);
+      if(key.startsWith('a')) anxiety+=v;
+      else if(key.startsWith('d')) depression+=v;
+      else if(key.startsWith('o')) ocd+=v;
     }
-
-    const payload = {
-      date: new Date().toISOString(),
-      anxiety,
-      depression,
-      ocd
-    };
-
-    try {
-      localStorage.setItem('psy_test_last_result', JSON.stringify(payload));
-    } catch (e) {}
-
-    result.style.display = 'block';
-    result.innerHTML = `
+    resultDiv.style.display='block';
+    resultDiv.innerHTML=`
       <h2>📈 Результаты</h2>
       <div class="scale">😟 Тревога: <b>${anxiety}</b> / 6</div>
       <div class="scale">😔 Депрессия: <b>${depression}</b> / 6</div>
       <div class="scale">🔁 ОКР: <b>${ocd}</b> / 6</div>
-      <p>Чем выше балл — тем сильнее выражены симптомы.</p>
-      <p style="font-size:13px;color:#94a3b8">Результат сохранён на этом устройстве 📦</p>
+      <p>💡 Попробуйте это для снижения стресса: <a href="${test.recommendation_link}" target="_blank">${test.recommendation_link}</a></p>
     `;
   });
-});
+}
+
+document.addEventListener('DOMContentLoaded', loadTest);
 </script>
 </body>
 </html>

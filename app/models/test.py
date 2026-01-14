@@ -1,12 +1,9 @@
-from sqlalchemy import Column, Integer, String, JSON, Boolean
-from app.database import Base
+from sqlalchemy import Column, Integer, String
+from .base import Base
 
 class Test(Base):
     __tablename__ = "tests"
 
-    id = Column(Integer, primary_key=True)
-    slug = Column(String, unique=True)
-    title = Column(String)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
     description = Column(String)
-    questions = Column(JSON)  
-    is_active = Column(Boolean, default=True)
