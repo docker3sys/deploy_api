@@ -3,6 +3,9 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal, Base, engine
 from app.routers import tests
 from app import models
+from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 models.Base.metadata.create_all(bind=engine)
 
