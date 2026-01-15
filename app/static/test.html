@@ -1,84 +1,183 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<title>Психометрический тест</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
-  body { font-family: system-ui, sans-serif; background: #020617; color: #e5e7eb; margin:0; padding:20px; }
-  .container { max-width:760px; margin:auto; padding:24px; border-radius:16px; background:#020617; border:1px solid #1e293b; box-shadow:0 0 30px rgba(0,0,0,.4);}
-  h1,h2{text-align:center;}
-  .progress{height:10px;background:#0f172a;border-radius:6px;overflow:hidden;margin:20px 0;}
-  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#22d3ee,#2563eb);transition:width .3s;}
-  .question{margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid #1e293b;}
-  label{display:block;margin:6px 0;cursor:pointer;}
-  button{width:100%;padding:14px;font-size:16px;background:#2563eb;color:#fff;border:none;border-radius:10px;cursor:pointer;}
-  button:hover{background:#1d4ed8;}
-  .result{margin-top:30px;padding:20px;background:#020617;border:1px solid #1e293b;border-radius:12px;}
-  .scale{margin-bottom:16px;}
-  .note{font-size:12px;color:#94a3b8;margin-top:20px;}
-</style>
+  <meta charset="UTF-8">
+  <title>Психометрический тест</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 760px;
+      margin: auto;
+      border: 1px solid #1e293b;
+      border-radius: 16px;
+      padding: 24px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin: 20px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+    }
+    label {
+      display: block;
+      margin: 6px 0;
+      cursor: pointer;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      margin-top: 20px;
+      font-size: 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+    }
+  </style>
 </head>
 <body>
+
 <div class="container">
   <h1>🧠 Психометрический тест</h1>
   <p style="text-align:center">Тревога • Депрессия • ОКР</p>
-  <div class="progress"><div class="progress-bar" id="progress"></div></div>
+
   <form id="testForm"></form>
+
   <div id="result" class="result" style="display:none"></div>
-  <div class="note">⚠️ Тест основан на принципах психометрических шкал, но не является медицинской диагностикой.</div>
 </div>
+
 <script>
-alert("JS works!");
 'use strict';
-async function loadTest() {
-  const form = document.getElementById('testForm');
-  const progressBar = document.getElementById('progress');
-  const resultDiv = document.getElementById('result');
-  
-  const res = await fetch('/tests/anxiety.json');
-  const test = await res.json();
-  
-  form.innerHTML = test.questions.map(q => `
-    <h2>${q.category}</h2>
-    <div class="question">
-      <p>${q.text}</p>
-      ${q.options.map(opt => `<label><input type="radio" name="${q.id}" value="${opt.value}" required> ${opt.text}</label>`).join('')}
-    </div>
-  `).join('') + `<button type="submit">📊 Показать результат</button>`;
-  
-  const inputs = Array.from(form.querySelectorAll('input[type="radio"]'));
-  const questionNames = [...new Set(inputs.map(i => i.name))];
-  
-  function updateProgress() {
-    const answered = questionNames.filter(name => form.querySelector(`input[name="${name}"]:checked`)).length;
-    progressBar.style.width = Math.round(answered / questionNames.length * 100) + '%';
+
+/* ===========================
+   ДАННЫЕ ТЕСТА (РЕДАКТИРУЕМ ТУТ)
+   =========================== */
+
+const TEST = [
+  {
+    scale: "anxiety",
+    title: "😟 Тревога",
+    questions: [
+      "Я часто чувствую внутреннее напряжение",
+      "Мне сложно расслабиться",
+    ]
+  },
+  {
+    scale: "depression",
+    title: "😔 Депрессия",
+    questions: [
+      "Мне трудно получать удовольствие",
+      "Я чувствую усталость без причины",
+    ]
+  },
+  {
+    scale: "ocd",
+    title: "🔁 ОКР",
+    questions: [
+      "Меня беспокоят навязчивые мысли",
+      "Я совершаю повторяющиеся действия",
+    ]
   }
-  
-  inputs.forEach(i => i.addEventListener('change', updateProgress));
-  
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    let anxiety=0, depression=0, ocd=0;
-    const data = new FormData(form);
-    for(const [key,val] of data.entries()){
-      const v=Number(val);
-      if(key.startsWith('a')) anxiety+=v;
-      else if(key.startsWith('d')) depression+=v;
-      else if(key.startsWith('o')) ocd+=v;
-    }
-    resultDiv.style.display='block';
-    resultDiv.innerHTML=`
-      <h2>📈 Результаты</h2>
-      <div class="scale">😟 Тревога: <b>${anxiety}</b> / 6</div>
-      <div class="scale">😔 Депрессия: <b>${depression}</b> / 6</div>
-      <div class="scale">🔁 ОКР: <b>${ocd}</b> / 6</div>
-      <p>💡 Попробуйте это для снижения стресса: <a href="${test.recommendation_link}" target="_blank">${test.recommendation_link}</a></p>
-    `;
+];
+
+const ANSWERS = [
+  { text: "Нет", value: 0 },
+  { text: "Иногда", value: 1 },
+  { text: "Часто", value: 2 },
+  { text: "Почти всегда", value: 3 },
+];
+
+/* ===========================
+   РЕНДЕР ТЕСТА
+   =========================== */
+
+const form = document.getElementById("testForm");
+const resultBox = document.getElementById("result");
+
+function renderTest() {
+  TEST.forEach(section => {
+    const h2 = document.createElement("h2");
+    h2.textContent = section.title;
+    form.appendChild(h2);
+
+    section.questions.forEach((q, i) => {
+      const qId = `${section.scale}_${i}`;
+
+      const div = document.createElement("div");
+      div.className = "question";
+
+      const p = document.createElement("p");
+      p.textContent = q;
+      div.appendChild(p);
+
+      ANSWERS.forEach(a => {
+        const label = document.createElement("label");
+        label.innerHTML = `
+          <input type="radio" name="${qId}" value="${a.value}" required>
+          ${a.text}
+        `;
+        div.appendChild(label);
+      });
+
+      form.appendChild(div);
+    });
   });
+
+  const btn = document.createElement("button");
+  btn.textContent = "📊 Показать результат";
+  btn.type = "submit";
+  form.appendChild(btn);
 }
 
-document.addEventListener('DOMContentLoaded', loadTest);
+renderTest();
+
+/* ===========================
+   ПОДСЧЁТ РЕЗУЛЬТАТА
+   =========================== */
+
+form.addEventListener("submit", e => {
+  e.preventDefault();
+
+  const scores = {
+    anxiety: 0,
+    depression: 0,
+    ocd: 0
+  };
+
+  const data = new FormData(form);
+
+  for (const [key, value] of data.entries()) {
+    const scale = key.split("_")[0];
+    scores[scale] += Number(value);
+  }
+
+  resultBox.style.display = "block";
+  resultBox.innerHTML = `
+    <h2>📈 Результаты</h2>
+    😟 Тревога: <b>${scores.anxiety}</b><br>
+    😔 Депрессия: <b>${scores.depression}</b><br>
+    🔁 ОКР: <b>${scores.ocd}</b><br><br>
+    Чем выше балл — тем сильнее выражены симптомы.
+  `;
+});
 </script>
+
 </body>
 </html>
