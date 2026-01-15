@@ -13,7 +13,7 @@ app = FastAPI(title="Mental Health Tests")
 
 app.include_router(tests.router, prefix="/tests")
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent
 
 app.mount(
     "/static",
