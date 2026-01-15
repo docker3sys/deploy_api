@@ -10,6 +10,18 @@ app = FastAPI(title="Mental Health Tests")
 
 app.include_router(tests.router, prefix="/tests")
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+app.mount(
+    "/static",
+    StaticFiles(directory=BASE_DIR / "static"),
+    name="static"
+)
+
+@app.get("/")
+def index():
+    return FileResponse(BASE_DIR / "static" / "test.html")
+
 def get_db():
     db = SessionLocal()
     try:
