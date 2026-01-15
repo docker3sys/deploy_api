@@ -1,0 +1,80 @@
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a;
+  color: #e5e7eb;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.question {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.answers button {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 14px;
+  background: #1e293b;
+  color: #e5e7eb;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.answers button:hover {
+  background: #334155;
+}
+
+.progress {
+  height: 6px;
+  background: #1e293b;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #38bdf8;
+  transition: width 0.3s;
+}
+
+.result {
+  background: #020617;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.scale {
+  margin-bottom: 12px;
+}
+
+.scale span {
+  display: block;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.scale strong {
+  font-size: 18px;
+}
